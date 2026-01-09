@@ -2,9 +2,10 @@ spring:
   application:
     name: 'backend'
   datasource:
-    url: jdbc:postgresql://aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
-    username: postgres.mdwcieundixfjeyojtuf
-    password: Ramesh@9100392853
+    url: ${DB_URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -21,3 +22,6 @@ spring:
 logging:
   level:
     org.hibernate.sql: debug
+
+server:
+  port: 8081
