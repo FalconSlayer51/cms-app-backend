@@ -18,6 +18,8 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+    default-schema: public
+    schemas: public
 
 logging:
   level:
