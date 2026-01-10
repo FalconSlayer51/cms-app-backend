@@ -1,5 +1,5 @@
 package org.ramesh.backend.domain.enums;
 
 public enum AssetVariant {
-    PORTRAIT, LANDSCAPE, SQUARE, BANNER
+    portrait, landscape, square, banner
 }

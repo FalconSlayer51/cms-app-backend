@@ -1,6 +1,12 @@
 package org.ramesh.backend.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.ramesh.backend.domain.enums.ContentType;
 import org.ramesh.backend.domain.enums.LessonStatus;
 
@@ -8,6 +14,10 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(
         name = "lessons",
@@ -22,6 +32,8 @@ public class Lesson {
     private int lessonNumber;
     @Column(nullable = false)
     private String title;
+
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Enumerated(EnumType.STRING)
     @Column(name = "content_type", nullable = false)
     private ContentType contentType;
@@ -38,6 +50,7 @@ public class Lesson {
     @Column(name = "language", nullable = false)
     private List<String> contentLanguagesAvailable;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "content_urls_by_language", columnDefinition = "jsonb")
     private String contentUrlsByLanguage;
 
@@ -49,9 +62,11 @@ public class Lesson {
     @Column(name = "language")
     private List<String> subtitleLanguages;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "subtitle_urls_by_language", columnDefinition = "jsonb")
     private String subtitleUrlsByLanguage;
 
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Enumerated(EnumType.STRING)
     private LessonStatus status;
 
@@ -59,5 +74,17 @@ public class Lesson {
     private OffsetDateTime publishedAt;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+
+    @PrePersist
+    void onCreate() {
+        OffsetDateTime now = OffsetDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    void onUpdate() {
+        this.updatedAt = OffsetDateTime.now();
+    }
 }
 
