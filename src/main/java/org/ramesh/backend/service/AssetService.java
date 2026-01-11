@@ -46,4 +46,33 @@ public class AssetService {
 
         return new PresignAssetResponse(uploadUrl, publicUrl);
     }
+
+    public PresignAssetResponse presignLessonAssetResponse(
+            UUID lessonId,
+            PresignAssetRequest req
+    ) {
+        String key = "lessons/%s/%s/%s/%s"
+                .formatted(
+                        lessonId,
+                        req.language(),
+                        req.variant(),
+                        req.fileName()
+                );
+
+        PutObjectRequest putReq = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .contentType("image/jpeg")
+                .build();
+
+        String uploadUrl = preSigner.presignPutObject(r -> r
+                .signatureDuration(Duration.ofMinutes(10))
+                .putObjectRequest(putReq)
+        ).url().toString();
+
+        String publicUrl = cdnBaseUrl + "/" + key;
+
+        return new PresignAssetResponse(uploadUrl, publicUrl);
+    }
+
 }
