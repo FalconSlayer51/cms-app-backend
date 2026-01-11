@@ -42,4 +42,10 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
             nativeQuery = true
     )
     List<UUID> findProgramsWithPublishedLessons(@Param("now") OffsetDateTime now);
+
+    List<Lesson> findByTermIdOrderByLessonNumber(UUID termId);
+    List<Lesson> findByStatusAndPublishAtBefore(
+        LessonStatus status,
+        OffsetDateTime now
+    );
 }
