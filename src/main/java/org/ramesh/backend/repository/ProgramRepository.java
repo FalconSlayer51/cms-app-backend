@@ -1,6 +1,7 @@
 package org.ramesh.backend.repository;
 
 import org.ramesh.backend.domain.entities.Program;
+import org.ramesh.backend.domain.enums.ProgramStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -24,4 +26,6 @@ public interface ProgramRepository extends JpaRepository<Program, UUID> {
             @Param("programId") UUID programId,
             @Param("now") OffsetDateTime now
     );
+
+    List<Program> findByStatusOrderByPublishedAtDesc(ProgramStatus status);
 }

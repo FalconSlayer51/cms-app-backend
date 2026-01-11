@@ -48,4 +48,9 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
         LessonStatus status,
         OffsetDateTime now
     );
+
+    List<Lesson> findByTermIdAndStatusOrderByLessonNumber(
+            UUID termId,
+            LessonStatus status
+    );
 }
