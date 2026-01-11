@@ -35,3 +35,7 @@ bootstrap:
   admin:
     email: admin@gmail.com
     password: admin
+
+springdoc:
+  swagger-ui:
+    enabled: true
