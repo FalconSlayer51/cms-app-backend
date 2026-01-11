@@ -7,5 +7,6 @@ public record PresignAssetRequest(
         AssetType assetType,
         AssetVariant variant,
         String language,
-        String fileName
+        String fileName,
+        String contentType
 ) {}

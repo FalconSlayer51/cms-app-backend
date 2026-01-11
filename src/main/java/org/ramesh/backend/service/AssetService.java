@@ -34,7 +34,7 @@ public class AssetService {
         PutObjectRequest putReq = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
-                .contentType("image/jpeg")
+                .contentType(req.contentType())
                 .build();
 
         String uploadUrl = preSigner.presignPutObject(r -> r
@@ -62,7 +62,7 @@ public class AssetService {
         PutObjectRequest putReq = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
-                .contentType("image/jpeg")
+                .contentType(req.contentType())
                 .build();
 
         String uploadUrl = preSigner.presignPutObject(r -> r
