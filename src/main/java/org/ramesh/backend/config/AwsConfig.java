@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 public class AwsConfig {
 
     @Bean
-    public S3Presigner s3Presigner(@Value("${AWS_REGION}") String region) {
+    public S3Presigner s3Presigner(@Value("${aws.region}") String region) {
         return S3Presigner.builder()
                 .region(Region.of(region))
                 .credentialsProvider(DefaultCredentialsProvider.create())

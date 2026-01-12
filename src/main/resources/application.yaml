@@ -39,3 +39,12 @@ bootstrap:
 springdoc:
   swagger-ui:
     enabled: true
+aws:
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
+  region: ${AWS_REGION}
+  s3:
+    bucket: ${AWS_S3_BUCKET}
+
+cdn:
+  base-url: ${CDN_BASE_URL}

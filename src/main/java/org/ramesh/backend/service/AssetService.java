@@ -22,10 +22,10 @@ public class AssetService {
     private final ProgramAssetRepository programAssetRepository;
     private final LessonAssetRepository lessonAssetRepository;
 
-    @Value("${AWS_S3_BUCKET}")
+    @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    @Value("${CDN_BASE_URL}")
+    @Value("${cdn.base-url}")
     private String cdnBaseUrl;
 
     public AssetService(S3Presigner preSigner, ProgramAssetRepository programAssetRepository, LessonAssetRepository lessonAssetRepository) {
