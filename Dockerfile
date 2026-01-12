@@ -6,9 +6,10 @@ WORKDIR /home/gradle/project
 
 # Copy wrapper and build files first (cache dependencies)
 COPY gradlew gradle/ gradle/wrapper/ build.gradle settings.gradle /home/gradle/project/
-RUN chown -R gradle:gradle /home/gradle/project && chmod +x /home/gradle/project/gradlew
+RUN chown -R gradle:gradle /home/gradle/project && chmod +x /home/gradle/project/gradlew || true
 USER gradle
-RUN ./gradlew --no-daemon --version || true
+# If gradle-wrapper.jar is missing, run gradle wrapper to generate it; otherwise print version
+RUN if [ -f /home/gradle/project/gradle/wrapper/gradle-wrapper.jar ]; then ./gradlew --no-daemon --version || true; else gradle wrapper || true; fi
 
 # Copy source and build fat jar (bootJar)
 COPY --chown=gradle:gradle . /home/gradle/project

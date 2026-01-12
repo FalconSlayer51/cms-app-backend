@@ -1,3 +1,4 @@
+# Keep .env out of the image
 .env
 *.env
 
@@ -16,3 +17,6 @@ Thumbs.db
 # Ignore test files
 *.test
 test-results/
+
+# Important: DO NOT ignore gradle/wrapper/gradle-wrapper.jar - it must be included in the build context
+# (intentionally left no patterns that match gradle/wrapper/gradle-wrapper.jar)
