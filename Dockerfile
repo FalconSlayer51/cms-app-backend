@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile
 
-# Builder: use Gradle's official image to run the project's Gradle wrapper
-FROM gradle:8.6-jdk17 AS builder
+# Builder: use Gradle image with Gradle 9 to satisfy Spring Boot plugin requirements
+FROM gradle:9-jdk17 AS builder
 WORKDIR /home/gradle/project
 
 # Copy wrapper and build files first (cache dependencies)
