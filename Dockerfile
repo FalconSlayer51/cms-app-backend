@@ -4,6 +4,7 @@
 FROM gradle:8.6-jdk17 AS builder
 WORKDIR /home/gradle/project
 
+RUN chmod +x gradlew
 # Copy wrapper and build files first (cache dependencies)
 COPY gradlew gradle/ gradle/wrapper/ build.gradle settings.gradle /home/gradle/project/
 RUN chown -R gradle:gradle /home/gradle/project
