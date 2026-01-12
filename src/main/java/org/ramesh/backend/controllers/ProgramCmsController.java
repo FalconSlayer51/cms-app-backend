@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,6 +23,11 @@ public class ProgramCmsController {
     public ProgramCmsController(ProgramService programService, ProgramPublishService programPublishService) {
         this.programService = programService;
         this.programPublishService = programPublishService;
+    }
+
+    @GetMapping
+    public List<ProgramResponse> list() {
+        return programService.list();
     }
 
     @PostMapping

@@ -9,6 +9,7 @@ import org.ramesh.backend.repository.ProgramRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,6 +19,11 @@ public class ProgramService {
 
     public ProgramService(ProgramRepository programRepository) {
         this.programRepository = programRepository;
+    }
+
+    public List<ProgramResponse> list() {
+        List<Program> programs = programRepository.findAll();
+        return programs.stream().map(this::toResponse).toList();
     }
 
     public ProgramResponse create(CreateProgramRequest request) {
@@ -57,8 +63,8 @@ public class ProgramService {
             throw new IllegalArgumentException("Scheduled date should be in future");
         }
 
-        program.setStatus(ProgramStatus.draft);
-        program.setPublishedAt(null);
+        program.setStatus(ProgramStatus.scheduled);
+        program.setPublishedAt(publishAt);
         program.setUpdatedAt(OffsetDateTime.now());
     }
 

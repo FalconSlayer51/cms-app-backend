@@ -33,7 +33,6 @@ public class PublishingWorkerService {
 
         OffsetDateTime now = OffsetDateTime.now();
 
-
         log.info("Publishing worker tick at {}"+ now);
 
         int publishedLessons = lessonRepository.publishDueLessons(now, LessonStatus.scheduled, LessonStatus.published);

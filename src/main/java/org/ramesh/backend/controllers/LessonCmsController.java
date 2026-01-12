@@ -8,6 +8,7 @@ import org.ramesh.backend.service.LessonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,12 @@ public class LessonCmsController {
             @PathVariable UUID termId,
             @Valid @RequestBody CreateLessonRequest request
     ) {
+        System.out.println(
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getAuthorities()
+        );
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(lessonService.create(termId, request));
     }

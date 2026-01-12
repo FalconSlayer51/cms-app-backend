@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface TermRepository extends JpaRepository<Term, UUID> {
     List<Term> findByProgramIdOrderByTermNumber(UUID programId);
+
+    Term findByProgramId(UUID programId);
 }

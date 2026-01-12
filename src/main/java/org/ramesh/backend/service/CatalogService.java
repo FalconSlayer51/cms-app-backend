@@ -39,7 +39,6 @@ public class CatalogService {
 
     public ProgramCatalogResponse getProgram(UUID id) {
         Program p = programRepository.findById(id)
-                .filter(pr -> pr.getStatus() == ProgramStatus.published)
                 .orElseThrow(() -> new IllegalArgumentException("Program not found"));
         return toProgram(p);
     }

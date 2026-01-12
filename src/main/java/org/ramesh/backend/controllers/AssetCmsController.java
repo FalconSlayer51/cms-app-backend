@@ -2,6 +2,7 @@ package org.ramesh.backend.controllers;
 
 import org.ramesh.backend.domain.dto.PresignAssetRequest;
 import org.ramesh.backend.domain.dto.PresignAssetResponse;
+import org.ramesh.backend.domain.dto.PresignResponse;
 import org.ramesh.backend.service.AssetService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/cms/assets")
-@PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
 public class AssetCmsController {
 
     private final AssetService assetService;
@@ -19,6 +19,7 @@ public class AssetCmsController {
         this.assetService = assetService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     @PostMapping("/presign/program/{programId}")
     public PresignAssetResponse presignProgram(
             @PathVariable UUID programId,
@@ -27,6 +28,7 @@ public class AssetCmsController {
         return assetService.presignAssetResponse(programId, request);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     @PostMapping("/presign/lesson/{lessonId}")
     public PresignAssetResponse presignLesson(
             @PathVariable UUID lessonId,
@@ -34,5 +36,18 @@ public class AssetCmsController {
     ) {
         return assetService.presignLessonAssetResponse(lessonId, request);
     }
-}
 
+    @GetMapping("/lesson/{lessonId}")
+    public PresignResponse presignResponse(
+            @PathVariable UUID lessonId
+    ) {
+        return assetService.getAllLessonUrls(lessonId);
+    }
+
+    @GetMapping("/program/{programId}")
+    public PresignResponse getAllProgramUrls(
+            @PathVariable UUID programId
+    ) {
+        return assetService.getAllProgramUrls(programId);
+    }
+}

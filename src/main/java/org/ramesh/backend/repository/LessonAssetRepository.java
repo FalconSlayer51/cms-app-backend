@@ -6,6 +6,7 @@ import org.ramesh.backend.domain.enums.AssetVariant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -17,5 +18,7 @@ public interface LessonAssetRepository
             AssetVariant variant,
             AssetType assetType
     );
+
+    List<LessonAsset> findLessonAssetByLessonId(UUID lessonId);
 }
 
