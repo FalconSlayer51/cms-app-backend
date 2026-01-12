@@ -4,10 +4,9 @@
 FROM gradle:8.6-jdk17 AS builder
 WORKDIR /home/gradle/project
 
-RUN chmod +x gradlew
 # Copy wrapper and build files first (cache dependencies)
 COPY gradlew gradle/ gradle/wrapper/ build.gradle settings.gradle /home/gradle/project/
-RUN chown -R gradle:gradle /home/gradle/project
+RUN chown -R gradle:gradle /home/gradle/project && chmod +x /home/gradle/project/gradlew
 USER gradle
 RUN ./gradlew --no-daemon --version || true
 
@@ -37,4 +36,3 @@ USER app
 
 # Start command reads configuration from env vars (DB_URL, USERNAME, PASSWORD, etc.)
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
-
