@@ -1,36 +1,39 @@
-# Build stage
-FROM eclipse-temurin:17-jdk-alpine AS build
+# Multi-stage Dockerfile
 
+# Builder: use Gradle's official image to run the project's Gradle wrapper
+FROM gradle:8.6-jdk17 AS builder
+WORKDIR /home/gradle/project
+
+# Copy wrapper and build files first (cache dependencies)
+COPY gradlew gradle/ gradle/wrapper/ build.gradle settings.gradle /home/gradle/project/
+RUN chown -R gradle:gradle /home/gradle/project
+USER gradle
+RUN ./gradlew --no-daemon --version || true
+
+# Copy source and build fat jar (bootJar)
+COPY --chown=gradle:gradle . /home/gradle/project
+RUN ./gradlew --no-daemon bootJar -x test
+
+# Runtime: small, maintained JRE image
+FROM eclipse-temurin:17-jre-jammy AS runtime
+LABEL org.opencontainers.image.source=""
+
+# Create a non-root user for running the app
+RUN groupadd -r app && useradd -r -g app app
 WORKDIR /app
 
-# Copy Gradle files
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle settings.gradle ./
+# Copy the built jar
+COPY --from=builder /home/gradle/project/build/libs/*.jar /app/app.jar
 
-# Cache dependencies
-RUN ./gradlew dependencies --no-daemon || true
+# Allow tuning memory and other JVM opts via JAVA_OPTS
+ENV JAVA_OPTS="-Xms128m -Xmx512m"
 
-# Copy source and build
-COPY src src
-RUN ./gradlew bootJar --no-daemon
+# Expose the application's port
+EXPOSE 8081
 
-# Runtime stage
-FROM eclipse-temurin:17-jre-alpine
+# Run as non-root user
+USER app
 
-WORKDIR /app
+# Start command reads configuration from env vars (DB_URL, USERNAME, PASSWORD, etc.)
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
 
-# Copy jar from build stage
-COPY --from=build /app/build/libs/*.jar app.jar
-
-EXPOSE 8080
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
-  CMD wget --quiet --tries=1 --spider http://localhost:8080/health || exit 1
-
-ENTRYPOINT ["java", \
-  "-XX:+UseContainerSupport", \
-  "-XX:MaxRAMPercentage=75.0", \
-  "-Djava.security.egd=file:/dev/./urandom", \
-  "-jar", \
-  "app.jar"]

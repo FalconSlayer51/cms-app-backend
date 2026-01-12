@@ -1,17 +1,14 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  app:
-    build: .
+  backend:
+    container_name: cms-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: spring-boot-backend:latest
+    env_file:
+      - .env
     ports:
       - "8081:8081"
-    environment:
-      - DB_URL=${DB_URL}
-      - USERNAME=${USERNAME}
-      - PASSWORD=${PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
-      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
-      - AWS_REGION=${AWS_REGION}
-      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
-      - CDN_BASE_URL=${CDN_BASE_URL}
+    restart: unless-stopped
