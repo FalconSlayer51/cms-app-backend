@@ -16,6 +16,6 @@ public record CreateLessonRequest(
 
         @NotBlank String contentLanguagePrimary,
         @NotNull List<String> contentLanguagesAvailable,
-        @NotNull Map<String, String> contentUrlsByLanguage
+        Map<String, String> contentUrlsByLanguage
 ) {
 }

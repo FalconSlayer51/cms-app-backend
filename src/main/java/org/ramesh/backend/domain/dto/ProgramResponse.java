@@ -10,7 +10,9 @@ public record ProgramResponse(
         String title,
         String description,
         ProgramStatus status,
-        OffsetDateTime publishedAt
+        OffsetDateTime publishedAt,
+        OffsetDateTime updatedAt,
+        OffsetDateTime createdAt
 ) {
 
 }

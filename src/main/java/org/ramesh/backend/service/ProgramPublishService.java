@@ -37,8 +37,8 @@ public class ProgramPublishService {
         Program program = programRepository.findById(programId)
                 .orElseThrow(() -> new IllegalArgumentException("Program not found"));
 
-        if (program.getStatus() != ProgramStatus.draft) {
-            throw new IllegalStateException("Only draft programs can be published");
+        if (program.getStatus() != ProgramStatus.draft && program.getStatus() != ProgramStatus.scheduled) {
+            throw new IllegalStateException("Only draft or scheduled programs can be published");
         }
 
         String lang = program.getLanguagePrimary();

@@ -80,7 +80,9 @@ public class ProgramService {
                 p.getTitle(),
                 p.getDescription(),
                 p.getStatus(),
-                p.getPublishedAt()
+                p.getPublishedAt(),
+                p.getUpdatedAt(),
+                p.getCreatedAt()
         );
     }
 }

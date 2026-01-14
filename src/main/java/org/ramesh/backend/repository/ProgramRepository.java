@@ -28,4 +28,10 @@ public interface ProgramRepository extends JpaRepository<Program, UUID> {
     );
 
     List<Program> findByStatusOrderByPublishedAtDesc(ProgramStatus status);
+
+    @Query("""
+                SELECT p FROM Program p
+                WHERE p.status = 'scheduled' AND p.publishedAt <= :now
+            """)
+    List<Program> findScheduledProgramsDue(@Param("now") OffsetDateTime now);
 }
